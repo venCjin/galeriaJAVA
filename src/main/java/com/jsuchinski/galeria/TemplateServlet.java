@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "templateServlet", value = "/servlet")
+@WebServlet(name = "TemplateServlet", value = "/servlet")
 public class TemplateServlet extends HttpServlet {
 
     @Override
