@@ -1,3 +1,5 @@
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Collections" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -22,10 +24,10 @@
 
       <h2>Rejestracja</h2>
 
-      <form method="post" action="RegServlet">
+      <form method="post" action="regiester">
         <div class="input-group margin-bottom-sm">
           <span class="input-group-addon"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>
-          <input class="form-control" minlength="6" maxlength="20" type="text" name="login" value="" placeholder="Login" required>
+          <input class="form-control" minlength="6" maxlength="20" type="text" name="login" value="${param.login}" placeholder="Login" required>
         </div>
 
         <div class="input-group margin-bottom-sm">
@@ -40,12 +42,12 @@
 
         <div class="input-group margin-bottom-sm">
           <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></span>
-          <input class="form-control" maxlength="128" type="email" name="email" value="" placeholder="Email" required>
+          <input class="form-control" maxlength="128" type="email" name="email" value="${param.email}" placeholder="Email" required>
         </div>
         <input type="submit" value="Zarejestruj">
       </form>
 
-      <c:forEach items="${R_errors}" var="error">
+      <c:forEach items="${requestScope.R_errors}" var="error">
         <p class="error"><i style="color: #EB3232;" class="fa fa-exclamation-circle" aria-hidden="true"></i> ${error}</p>
       </c:forEach>
 
@@ -69,7 +71,7 @@
         <input type="submit" value="Zaloguj">
       </form>
 
-      <c:if test = "${L_error != null}">
+      <c:if test = "${requestScope.L_error != null}">
         <p class="error"><i style="color: #EB3232;" class="fa fa-exclamation-circle" aria-hidden="true"></i> ${L_error}</p>
       </c:if>
     </div>

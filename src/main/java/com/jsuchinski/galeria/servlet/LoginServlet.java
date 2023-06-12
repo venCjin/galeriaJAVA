@@ -13,20 +13,20 @@ import javax.servlet.annotation.*;
 public class LoginServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html");
-
         String login = request.getParameter("L_login");
         String passwd = request.getParameter("L_password");
-//        List<String> errors = new ArrayList<>();
-//        errors.add(login);
-//        errors.add(passwd);
-//        request.setAttribute("L_errors", errors);
-//
-//        request.setAttribute("L_error", "Niepoprawne dane");
-//
-//        request.getRequestDispatcher("/index.jsp").forward(request, response);
 
-        try (Connection con = MySqlDB.getConnection()) {
+        try {
+            User user = MySqlDB.login(login, passwd);
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            response.sendRedirect("/");
+        } catch (Exception e) {
+            request.setAttribute("L_error", e.getMessage());
+            request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
+        }
+
+        /*try (Connection con = MySqlDB.getConnection()) {
             String selectSql = "SELECT * FROM galeria.uzytkownicy WHERE login=? AND haslo=?";
             try (PreparedStatement pstmt = con.prepareStatement(selectSql)) {
                 pstmt.setString(1, login);
@@ -34,8 +34,8 @@ public class LoginServlet extends HttpServlet {
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
                         User user = User.fromResultSet(rs);
-                        HttpSession session = request.getSession();
                         if(user.isActive()) {
+                            HttpSession session = request.getSession();
                             session.setAttribute("user", user);
                             response.sendRedirect("/");
                         } else {
@@ -51,11 +51,9 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             request.setAttribute("L_error", "Błąd bazy danych");
             request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
-            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             request.setAttribute("L_error", "Błąd serwera");
             request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
-            throw new RuntimeException(e);
-        }
+        }*/
     }
 }
