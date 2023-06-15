@@ -25,35 +25,5 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("L_error", e.getMessage());
             request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
         }
-
-        /*try (Connection con = MySqlDB.getConnection()) {
-            String selectSql = "SELECT * FROM galeria.uzytkownicy WHERE login=? AND haslo=?";
-            try (PreparedStatement pstmt = con.prepareStatement(selectSql)) {
-                pstmt.setString(1, login);
-                pstmt.setString(2, passwd);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        User user = User.fromResultSet(rs);
-                        if(user.isActive()) {
-                            HttpSession session = request.getSession();
-                            session.setAttribute("user", user);
-                            response.sendRedirect("/");
-                        } else {
-                            request.setAttribute("L_error", "Konto podanego użytkownika zostało zablokowane");
-                            request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
-                        }
-                    } else {
-                        request.setAttribute("L_error", "Niepoprawne dane");
-                        request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            request.setAttribute("L_error", "Błąd bazy danych");
-            request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
-        } catch (ClassNotFoundException e) {
-            request.setAttribute("L_error", "Błąd serwera");
-            request.getRequestDispatcher("/reg-log.jsp").forward(request, response);
-        }*/
     }
 }
