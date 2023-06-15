@@ -14,10 +14,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter("L_login");
-        String passwd = request.getParameter("L_password");
+        String password = request.getParameter("L_password");
 
         try {
-            User user = MySqlDB.login(login, passwd);
+            User user = MySqlDB.login(login, password);
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             response.sendRedirect("/");
