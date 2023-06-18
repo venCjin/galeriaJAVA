@@ -3,19 +3,19 @@
 <nav>
   <a id="galeria" class='button' href='/'><i class='fa fa-home'></i> Galeria</a>
 
-  <a id="top-foto" class='button' href='/top-foto.jsp'><i class='fa fa-star'></i> Najlepiej oceniane</a>
+<%--  <a id="top-foto" class='button' href='/top-foto.jsp'><i class='fa fa-star'></i> Najlepiej oceniane</a>--%>
 
-  <a id="nowe-foto" class='button' href='/nowe-foto.jsp'><i class='fa fa-certificate'></i> Najnowsze</a>
+<%--  <a id="nowe-foto" class='button' href='/nowe-foto.jsp'><i class='fa fa-certificate'></i> Najnowsze</a>--%>
 
   <c:choose>
 
     <c:when test = "${user != null}">
-      <a id='add-a' class='button' href='/dodaj-album.jsp'><i class='fa fa-folder' aria-hidden='true'></i> Załóż album</a>
-      <a id='add-z' class='button' href='/dodaj-foto.jsp'><i class='fa fa-plus-square' aria-hidden='true'></i> Dodaj zdjęcie</a>
-      <a id='acc' class='button' href='/konto.jsp'><i class='fa fa-user fa-fw' aria-hidden='true'></i> Moje konto</a>
+<%--      <a id='add-a' class='button' href='/dodaj-album.jsp'><i class='fa fa-folder' aria-hidden='true'></i> Załóż album</a>--%>
+<%--      <a id='add-z' class='button' href='/dodaj-foto.jsp'><i class='fa fa-plus-square' aria-hidden='true'></i> Dodaj zdjęcie</a>--%>
+<%--      <a id='acc' class='button' href='/konto.jsp'><i class='fa fa-user fa-fw' aria-hidden='true'></i> Moje konto</a>--%>
 
       <c:if test = "${user.isAdmin() || user.isMod()}">
-        <a class='button' href='/admin/index.jsp'><i class='fa fa-unlock-alt' aria-hidden='true'></i> Panel admina</a>
+<%--        <a class='button' href='/admin/index.jsp'><i class='fa fa-unlock-alt' aria-hidden='true'></i> Panel admina</a>--%>
       </c:if>
 
       <a class='button' href='/logout'><i class='fa fa-sign-out' aria-hidden='true'></i> Wyloguj się</a>

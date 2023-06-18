@@ -46,6 +46,11 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>1.2.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.0.0-jre</version>
+        </dependency>
     </dependencies>
 
     <build>
