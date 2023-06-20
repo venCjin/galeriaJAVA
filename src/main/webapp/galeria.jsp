@@ -11,7 +11,7 @@
 
 <section>
 
-    <div id="galeria-div">
+  <div id="galeria-div">
 
     <c:if test="${requestScope.msg != null}">
       <c:out value="${requestScope.msg}"/>
