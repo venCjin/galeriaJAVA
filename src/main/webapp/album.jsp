@@ -11,6 +11,8 @@
 
 <section>
 
+<%--  <a class='powrot' href='index.php?strona=galeria&page=$pg_g'><i class='fa fa-arrow-circle-left fa-lg' aria-hidden='true'></i><i class='fa fa-arrow-circle-o-left fa-lg' aria-hidden='true'></i>Powrót</a>--%>
+
   <div id="galeria-div">
 
     <c:if test="${requestScope.msg != null}">
@@ -51,6 +53,9 @@
     <div style="clear: both;"></div>
 
   </div>
+
+<%--  <br>--%>
+<%--  <a class='powrot' href='index.php?strona=galeria&page=$pg_g'><i class='fa fa-arrow-circle-left fa-lg' aria-hidden='true'></i><i class='fa fa-arrow-circle-o-left fa-lg' aria-hidden='true'></i>Powrót</a>--%>
 
   <script type="text/javascript">
     $("#pg${requestScope.page}").css("background-color","#4E986F");
