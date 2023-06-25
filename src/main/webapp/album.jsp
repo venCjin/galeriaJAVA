@@ -30,7 +30,7 @@
                 Data dodania zdjęcia: <c:out value="${item.getDate()}"/>
                 <c:if test="${item.hasDesc()}">
                   <br>
-                  Opis zdjęcia: <c:out value="${item.getDesc()}"/>
+                  Opis zdjęcia: <c:out value="${item.getDescShort()}"/>
                 </c:if>
               </p>
             </div>

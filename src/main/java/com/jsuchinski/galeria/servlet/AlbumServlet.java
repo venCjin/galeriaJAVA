@@ -92,11 +92,12 @@ public class AlbumServlet extends HttpServlet {
                     //! DEBUG
                     //albumsCount = 0;
 
-                    List<AlbumTileData> items = new ArrayList<>();
+                    List<FotoTileData> items = new ArrayList<>();
 
                     while (rs.next()) {
                         //Date d = rs.getDate("data");
-                        AlbumTileData data = new AlbumTileData(
+                        FotoTileData data = new FotoTileData(
+                            idAlbumu,
                             rs.getInt("id_z"),
                             rs.getString("opis"),
                             rs.getString("autor"),
