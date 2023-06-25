@@ -1,6 +1,7 @@
 package com.jsuchinski.galeria.servlet;
 
-import com.jsuchinski.galeria.MySqlDB;
+import com.jsuchinski.galeria.db.DAO;
+import com.jsuchinski.galeria.db.MariaDB_DAOImlp;
 import com.jsuchinski.galeria.model.User;
 
 import javax.servlet.ServletException;
@@ -10,13 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +18,18 @@ import java.util.regex.*;
 
 @WebServlet(name = "RegiesterServlet", value = "/regiester")
 public class RegiesterServlet extends HttpServlet {
+    DAO db;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        db = new MariaDB_DAOImlp();
+        try {
+            db.initConnection();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new ServletException(e);
+        }
+    }
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter("login");
@@ -57,7 +63,7 @@ public class RegiesterServlet extends HttpServlet {
         if (!Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(email).matches()) {
             errors.add("Podany adres e-mail jest niepoprawny");
         }
-        if (MySqlDB.isLoginOccupied(login)) {
+        if (db.isLoginOccupied(login)) {
             errors.add("Ten login jest już zajęty");
         }
         if (!passwd.equals(passwd2)) {
@@ -109,8 +115,8 @@ public class RegiesterServlet extends HttpServlet {
             //System.out.println(hash);
 
             try {
-                if (MySqlDB.createUser(login, passwd, email)) {
-                    User user = MySqlDB.login(login, passwd);
+                if (db.createUser(login, passwd, email)) {
+                    User user = db.login(login, passwd);
                     HttpSession session = request.getSession();
                     session.setAttribute("user", user);
                     response.sendRedirect("/");

@@ -1,7 +1,8 @@
 package com.jsuchinski.galeria.servlet;
 
 import com.google.common.primitives.Ints;
-import com.jsuchinski.galeria.MySqlDB;
+import com.jsuchinski.galeria.db.DAO;
+import com.jsuchinski.galeria.db.MariaDB_DAOImlp;
 import com.jsuchinski.galeria.model.GalleryTileData;
 
 import javax.servlet.ServletException;
@@ -17,28 +18,30 @@ import java.util.Optional;
 
 @WebServlet(name = "GaleriaServlet", value = "")
 public class GaleriaServlet extends HttpServlet {
+    DAO db;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        db = new MariaDB_DAOImlp();
+        try {
+            db.initConnection();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new ServletException(e);
+        }
+    }
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        try (Connection con = MySqlDB.getConnection()) {
+        try {
             /// ILOŚĆ ALBUMÓW
-            int albumsCount = 0;
-            String selectSql = "SELECT COUNT(*) AS liczba_wierszy FROM ( SELECT a.id FROM albumy AS a JOIN zadjecia AS z ON a.id = z.id_albumu WHERE z.zaakceptowane GROUP BY a.id HAVING SUM(z.zaakceptowane) > 0) AS podzapytanie";
-            try (PreparedStatement pstmt = con.prepareStatement(selectSql)) {
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    boolean hasData = rs.next();
-                    if (hasData) albumsCount = rs.getInt("liczba_wierszy");
-
-                    //! DEBUG
-                    //albumsCount = 0;
-
-                    if (!hasData || albumsCount<=0) {
-                        String msg = "W galerii nie ma jeszcze żadnych zdjęć. Bądź pierwszym który je doda!";
-                        request.setAttribute("msg", msg);
-                        //request.getRequestDispatcher -> in finally
-                        System.out.println("GaleriaServlet - brak obrazków");
-                        return;
-                    }
-                }
+            int albumsCount = db.getAlbumCountForGallery();
+            //! DEBUG
+            //albumsCount = 0;
+            if (albumsCount<=0) {
+                String msg = "W galerii nie ma jeszcze żadnych zdjęć. Bądź pierwszym który je doda!";
+                request.setAttribute("msg", msg);
+                //request.getRequestDispatcher -> in finally
+                System.out.println("GaleriaServlet - brak obrazków");
+                return;
             }
 
             /// STRONNICOWANIE
@@ -62,48 +65,19 @@ public class GaleriaServlet extends HttpServlet {
 
             /// MINIATURY
             System.out.println("GaleriaServlet - Miniatury");
-            selectSql = "SELECT a.id AS id_a, z.id AS id_z, a.tytul AS tytul, a.data AS data, u.login AS login FROM albumy AS a JOIN uzytkownicy AS u ON a.id_uzytkownika=u.id JOIN zadjecia AS z ON a.id=z.id_albumu WHERE z.zaakceptowane GROUP BY a.id ORDER BY "+sort+" limit ?,?";
-            try (PreparedStatement pstmt = con.prepareStatement(selectSql)) {
-                pstmt.setInt(1, sqlpage);
-                pstmt.setInt(2, pom);
-                try (ResultSet rs = pstmt.executeQuery()) {
-
-                    //! DEBUG
-                    //albumsCount = 0;
-
-                    List<GalleryTileData> items = new ArrayList<>();
-
-                    while (rs.next()) {
-                        //Date d = rs.getDate("data");
-                        GalleryTileData data = new GalleryTileData(
-                            rs.getInt("id_a"),
-                            rs.getInt("id_z"),
-                            rs.getString("tytul"),
-                            rs.getString("login"),
-                            rs.getString("data")
-                        );
-                        items.add(data);
-                    }
-
-                    if (!items.isEmpty()) {
-                        request.setAttribute("sortParam", sortParam);
-                        request.setAttribute("page", page);
-                        request.setAttribute("page_items", pages);
-                        request.setAttribute("gallery_items", items);
-                        //request.getRequestDispatcher -> in finally
-                        System.out.println("GaleriaServlet - Miniatury znaleziono");
-                    }
-                }
+            List<GalleryTileData> items = db.getAlbumsDataForGallery(sort,sqlpage,pom);
+            if (!items.isEmpty()) {
+                request.setAttribute("sortParam", sortParam);
+                request.setAttribute("page", page);
+                request.setAttribute("page_items", pages);
+                request.setAttribute("gallery_items", items);
+                //request.getRequestDispatcher -> in finally
+                System.out.println("GaleriaServlet - Miniatury znaleziono");
             }
 
-
-        } catch (SQLException e) {
-            request.setAttribute("error", "Błąd bazy danych");
-            System.out.println("GaleriaServlet - SQLException");
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            request.setAttribute("error", "Błąd serwera");
-            System.out.println("GaleriaServlet - ClassNotFoundException");
+        } catch (Exception e) {
+            request.setAttribute("error", e.getMessage());
+            System.out.println("GaleriaServlet - Exception");
             throw new RuntimeException(e);
         } finally {
             System.out.println("GaleriaServlet - finally");
