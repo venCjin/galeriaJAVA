@@ -4,12 +4,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-enum Role {
-    admin,
-    mod,
-    user,
-}
-
 public class User {
     int id;
     String login;
@@ -91,7 +85,7 @@ public class User {
         return regiesterDate;
     }
 
-    public void setRegiesterDate(Date regiesterDate) {
+    public void setRegisterDate(Date regiesterDate) {
         this.regiesterDate = regiesterDate;
     }
 
