@@ -15,17 +15,20 @@ import static org.mockito.Mockito.*;
 
 class LogoutServletTest {
 
+    HttpServletRequest request;
+    HttpServletResponse response;
+    HttpSession session;
+
     @BeforeEach
     void setUp() {
+        request = mock(HttpServletRequest.class);
+        response = mock(HttpServletResponse.class);
+        session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
     }
 
     @Test
     void doGet() throws IOException {
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        HttpSession session = mock(HttpSession.class);
-
-        when(request.getSession()).thenReturn(session);
         //when(session.getAttribute("user")).thenReturn(new User(1,"l","p","e",new Date(121211), Role.user,true));
 
         new LogoutServlet().doGet(request, response);
