@@ -63,18 +63,15 @@ public class RegiesterServlet extends HttpServlet {
         if (!Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(email).matches()) {
             errors.add("Podany adres e-mail jest niepoprawny");
         }
-        if (db.isLoginOccupied(login)) {
-            errors.add("Ten login jest już zajęty");
-        }
         if (!passwd.equals(passwd2)) {
             errors.add("Podane hasła się nie zgadzają");
         }
         // Service : end
+        if (db.isLoginOccupied(login)) {
+            errors.add("Ten login jest już zajęty");
+        }
 
-        if (!errors.isEmpty()) {
-            request.setAttribute("R_errors", errors);
-            request.getRequestDispatcher("/reg-log.jsp?login="+login+"&email="+email).forward(request,response);
-        } else {
+        if (errors.isEmpty()) {
             // Service : hash password
             /*
             SecureRandom random = new SecureRandom();
@@ -120,12 +117,13 @@ public class RegiesterServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("user", user);
                     response.sendRedirect("/");
+                    return;
                 }
             } catch (Exception e) {
                 errors.add(e.getMessage());
-                request.setAttribute("R_errors", errors);
-                request.getRequestDispatcher("/reg-log.jsp?login="+login+"&email="+email).forward(request,response);
             }
         }
+        request.setAttribute("R_errors", errors);
+        request.getRequestDispatcher("/reg-log.jsp?login="+login+"&email="+email).forward(request,response);
     }
 }
