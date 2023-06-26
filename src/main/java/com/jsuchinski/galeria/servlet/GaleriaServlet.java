@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +77,7 @@ public class GaleriaServlet extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             System.out.println("GaleriaServlet - Exception");
-            throw new RuntimeException(e);
+            throw new ServletException(e);
         } finally {
             System.out.println("GaleriaServlet - finally");
             request.getRequestDispatcher("/galeria.jsp").forward(request, response);
