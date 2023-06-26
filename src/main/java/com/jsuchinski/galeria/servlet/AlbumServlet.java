@@ -36,7 +36,7 @@ public class AlbumServlet extends HttpServlet {
         try {
             int idAlbumu = Optional.ofNullable(request.getParameter("id_albumu")).map(Ints::tryParse).orElse(-1);
             request.setAttribute("id_albumu", idAlbumu);
-            if(idAlbumu == -1) {
+            if(idAlbumu < 0) {
                 System.out.println("AlbumServlet - zły id albumu");
                 String msg = "W albumie nie ma żadnych zdjęć!";
                 request.setAttribute("msg", msg);
@@ -82,9 +82,8 @@ public class AlbumServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            request.setAttribute("error", e.getMessage());
             System.out.println("AlbumServlet - SQLException");
-            throw new RuntimeException(e);
+            request.setAttribute("msg", e.getMessage());
         } finally {
             System.out.println("AlbumServlet - finally");
             request.getRequestDispatcher("/album.jsp").forward(request, response);
