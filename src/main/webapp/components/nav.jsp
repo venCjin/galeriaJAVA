@@ -15,7 +15,7 @@
 <%--      <a id='acc' class='button' href='/konto.jsp'><i class='fa fa-user fa-fw' aria-hidden='true'></i> Moje konto</a>--%>
 
       <c:if test = "${user.isAdmin() || user.isMod()}">
-<%--        <a class='button' href='/admin/index.jsp'><i class='fa fa-unlock-alt' aria-hidden='true'></i> Panel admina</a>--%>
+        <a class='button' href='/admin'><i class='fa fa-unlock-alt' aria-hidden='true'></i> Panel admina</a>
       </c:if>
 
       <a class='button' href='/logout'><i class='fa fa-sign-out' aria-hidden='true'></i> Wyloguj się</a>
