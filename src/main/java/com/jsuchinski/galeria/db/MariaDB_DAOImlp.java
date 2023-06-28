@@ -4,6 +4,7 @@ import com.jsuchinski.galeria.model.FotoTileData;
 import com.jsuchinski.galeria.model.GalleryTileData;
 import com.jsuchinski.galeria.model.User;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.ArrayList;
@@ -267,6 +268,30 @@ public class MariaDB_DAOImlp implements DAO {
             }
         }
         return false;
+    }
+
+    @Override
+    public int addAlbum(String albumName, @Nonnull User user) {
+        String insertSql = "INSERT INTO albumy (tytul, data, id_uzytkownika) VALUES(?, CURRENT_DATE, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, albumName);
+            pstmt.setInt(2, user.getId());
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Dodanie albumu zakończone niepowodzeniem, nie miało to wpływu na żadne wiersze.");
+            }
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next())
+            {
+                int last_inserted_id = rs.getInt(1);
+                return last_inserted_id;
+            } else {
+                throw new SQLException("Dodanie albumu zakończone niepowodzeniem, nie udało się uzyskać id albumu.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
     }
 
     //    public static void main(String[] args) {

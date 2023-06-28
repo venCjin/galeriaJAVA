@@ -10,9 +10,9 @@
   <c:choose>
 
     <c:when test = "${user != null}">
-<%--      <a id='add-a' class='button' href='/dodaj-album.jsp'><i class='fa fa-folder' aria-hidden='true'></i> Załóż album</a>--%>
-<%--      <a id='add-z' class='button' href='/dodaj-foto.jsp'><i class='fa fa-plus-square' aria-hidden='true'></i> Dodaj zdjęcie</a>--%>
-<%--      <a id='acc' class='button' href='/konto.jsp'><i class='fa fa-user fa-fw' aria-hidden='true'></i> Moje konto</a>--%>
+      <a id='add-a' class='button' href='/dodaj-album'><i class='fa fa-folder' aria-hidden='true'></i> Załóż album</a>
+<%--      <a id='add-z' class='button' href='/dodaj-foto'><i class='fa fa-plus-square' aria-hidden='true'></i> Dodaj zdjęcie</a>--%>
+<%--      <a id='acc' class='button' href='/konto'><i class='fa fa-user fa-fw' aria-hidden='true'></i> Moje konto</a>--%>
 
       <c:if test = "${user.isAdmin() || user.isMod()}">
         <a class='button' href='/admin'><i class='fa fa-unlock-alt' aria-hidden='true'></i> Panel admina</a>
@@ -23,7 +23,7 @@
 
     <c:otherwise>
       <a class='button' href='/reg-log.jsp?log_err'><i class='fa fa-folder' aria-hidden='true'></i> Załóż album</a>
-      <a class='button' href='/reg-log.jsp?log_err'><i class='fa fa-plus-square' aria-hidden='true'></i> Dodaj zdjęcie</a>
+<%--      <a class='button' href='/reg-log.jsp?log_err'><i class='fa fa-plus-square' aria-hidden='true'></i> Dodaj zdjęcie</a>--%>
       <a id='reg-log' class='button' href='/reg-log.jsp'><i class='fa fa-sign-in' aria-hidden='true'></i> Logowanie/Rejestracja</a>
     </c:otherwise>
 

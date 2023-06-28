@@ -4,6 +4,7 @@ import com.jsuchinski.galeria.model.FotoTileData;
 import com.jsuchinski.galeria.model.GalleryTileData;
 import com.jsuchinski.galeria.model.User;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,4 +22,5 @@ public interface DAO {
     Object[] getFotoRating(int idZdjecia);
     @Nullable FotoTileData getFotoData(int idZdjecia);
     boolean addFotoRating(int idZdjecia, @Nullable User user, int rating);
+    int addAlbum(String albumName, @Nonnull User user);
 }
