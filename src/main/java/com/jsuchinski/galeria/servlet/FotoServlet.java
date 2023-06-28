@@ -39,7 +39,7 @@ public class FotoServlet extends HttpServlet {
             System.out.println("FotoServlet - zły id zdjecia");
             String msg = "Nie ma takiego zdjęcia!";
             request.setAttribute("msg", msg);
-            //request.getRequestDispatcher -> in finally
+            request.getRequestDispatcher("/foto.jsp").forward(request, response);
             return;
         }
 
@@ -69,12 +69,11 @@ public class FotoServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("foto post rating");
-        //String ocena = request.getParameter("ocena");
         int rating = Optional.ofNullable(request.getParameter("ocena")).map(Ints::tryParse).orElse(-1);
         if (rating < 1 || rating > 10) {
             System.out.println("FotoServlet - zła wartość oceny: " + rating);
-            //request.setAttribute("msg", "Ejże! Nie majstruj przy ocenie. Zakres ocen to 1-10.");
             request.setAttribute("alert", "Ejże! Nie majstruj przy ocenie. Zakres ocen to 1-10.");
+            request.getRequestDispatcher("/foto.jsp").forward(request, response);
             return;
         }
 
@@ -83,13 +82,13 @@ public class FotoServlet extends HttpServlet {
             System.out.println("FotoServlet - zły id zdjecia");
             String msg = "Nie ma takiego zdjęcia!";
             request.setAttribute("msg", msg);
-            //request.getRequestDispatcher -> in finally
+            request.getRequestDispatcher("/foto.jsp").forward(request, response);
             return;
         }
 
         User user = (User) request.getSession().getAttribute("user");
         boolean success = db.addFotoRating(idZdjecia,user,rating);
-        
+
         //request.getRequestDispatcher("/foto").forward(request, response);
         doGet(request,response);
     }
