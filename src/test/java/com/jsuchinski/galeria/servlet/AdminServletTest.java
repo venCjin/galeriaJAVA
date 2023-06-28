@@ -33,15 +33,14 @@ class AdminServletTest {
         session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
         servlet = new AdminServlet();
+        RequestDispatcher rd = mock(RequestDispatcher.class);
+        when(request.getRequestDispatcher(eq("/admin/index.jsp"))).thenReturn(rd);
     }
 
     @Test
     void doGetAdminActive() throws ServletException, IOException {
         User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.admin,true);
         when(session.getAttribute("user")).thenReturn(u);
-
-        RequestDispatcher rd = mock(RequestDispatcher.class);
-        when(request.getRequestDispatcher(eq("/admin/index.jsp"))).thenReturn(rd);
 
         servlet.doGet(request,response);
 
@@ -53,9 +52,6 @@ class AdminServletTest {
     void doGetModActive() throws ServletException, IOException {
         User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.mod,true);
         when(session.getAttribute("user")).thenReturn(u);
-
-        RequestDispatcher rd = mock(RequestDispatcher.class);
-        when(request.getRequestDispatcher(eq("/admin/index.jsp"))).thenReturn(rd);
 
         servlet.doGet(request,response);
 
