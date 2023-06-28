@@ -37,8 +37,8 @@ class AdminServletTest {
 
     @Test
     void doGetAdminActive() throws ServletException, IOException {
-        User adminActive = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.admin,true);
-        when(session.getAttribute("user")).thenReturn(adminActive);
+        User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.admin,true);
+        when(session.getAttribute("user")).thenReturn(u);
 
         RequestDispatcher rd = mock(RequestDispatcher.class);
         when(request.getRequestDispatcher(eq("/admin/index.jsp"))).thenReturn(rd);
@@ -51,8 +51,8 @@ class AdminServletTest {
 
     @Test
     void doGetModActive() throws ServletException, IOException {
-        User adminActive = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.mod,true);
-        when(session.getAttribute("user")).thenReturn(adminActive);
+        User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.mod,true);
+        when(session.getAttribute("user")).thenReturn(u);
 
         RequestDispatcher rd = mock(RequestDispatcher.class);
         when(request.getRequestDispatcher(eq("/admin/index.jsp"))).thenReturn(rd);
@@ -65,8 +65,8 @@ class AdminServletTest {
 
     @Test
     void doGetAdminNotActive() throws ServletException, IOException {
-        User adminActive = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.admin,false);
-        when(session.getAttribute("user")).thenReturn(adminActive);
+        User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.admin,false);
+        when(session.getAttribute("user")).thenReturn(u);
 
         servlet.doGet(request,response);
 
@@ -76,8 +76,8 @@ class AdminServletTest {
 
     @Test
     void doGetModNotActive() throws ServletException, IOException {
-        User adminActive = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.mod,false);
-        when(session.getAttribute("user")).thenReturn(adminActive);
+        User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.mod,false);
+        when(session.getAttribute("user")).thenReturn(u);
 
         servlet.doGet(request,response);
 
@@ -87,8 +87,8 @@ class AdminServletTest {
 
     @Test
     void doGetUserActive() throws ServletException, IOException {
-        User adminActive = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.user,true);
-        when(session.getAttribute("user")).thenReturn(adminActive);
+        User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.user,true);
+        when(session.getAttribute("user")).thenReturn(u);
 
         servlet.doGet(request,response);
 
@@ -98,8 +98,8 @@ class AdminServletTest {
 
     @Test
     void doGetUserNotActive() throws ServletException, IOException {
-        User adminActive = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.user,false);
-        when(session.getAttribute("user")).thenReturn(adminActive);
+        User u = new User(1,"login","pass","email@aa.pl", Date.valueOf(LocalDate.now()), Role.user,false);
+        when(session.getAttribute("user")).thenReturn(u);
 
         servlet.doGet(request,response);
 
