@@ -15,6 +15,11 @@ public class GalleryTileData {
         this.date = date;
     }
 
+    public GalleryTileData(int idAlbum, String title) {
+        this.idAlbum = idAlbum;
+        this.title = title;
+    }
+
     public int getIdAlbum() {
         return idAlbum;
     }

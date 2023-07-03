@@ -294,6 +294,56 @@ public class MariaDB_DAOImlp implements DAO {
         return -1;
     }
 
+    @Override
+    public List<GalleryTileData> getUserAlbums(@Nonnull User user) throws Exception {
+        List<GalleryTileData> items = new ArrayList<>();
+        String selectSql = "SELECT * FROM albumy WHERE id_uzytkownika=? ORDER BY tytul";
+        try (PreparedStatement pstmt = con.prepareStatement(selectSql)) {
+            pstmt.setInt(1, user.getId());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                //! DEBUG
+                //albumsCount = 0;
+                while (rs.next()) {
+                    GalleryTileData data = new GalleryTileData(
+                        rs.getInt("id"),
+                        rs.getString("tytul")
+                    );
+                    items.add(data);
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Błąd bazy danych", e);
+        }
+        return items;
+    }
+
+    @Override
+    public int addFoto(int idAlbum, String description, @Nonnull User user) throws Exception {
+        // TODO: Domyślnie zaakceptowane zdjęcie, zmienć gdy admin panel do akceptacji
+        boolean defaultAccepted = true;
+        String insertSql = "INSERT INTO zadjecia (tytul, data, id_uzytkownika, id_albumu, zaakceptowane) VALUES(?, CURRENT_DATE, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, description);
+            pstmt.setInt(2, user.getId());
+            pstmt.setInt(3, idAlbum);
+            pstmt.setBoolean(4, defaultAccepted);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new Exception("Dodanie zdjęcia zakończone niepowodzeniem, nie miało to wpływu na żadne wiersze.");
+            }
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next())
+            {
+                int last_inserted_id = rs.getInt(1);
+                return last_inserted_id;
+            } else {
+                throw new Exception("Dodanie zdjęcia zakończone niepowodzeniem, nie udało się uzyskać id zdjęcia.");
+            }
+        } catch (SQLException e) {
+            throw new Exception("Dodanie zdjęcia zakończone niepowodzeniem.");
+        }
+    }
+
     //    public static void main(String[] args) {
 //        String url = "jdbc:mysql://localhost:3306/galeria";
 //        String user = "user1";
@@ -311,4 +361,5 @@ public class MariaDB_DAOImlp implements DAO {
 //            throw new RuntimeException(e);
 //        }
 //    }
+
 }

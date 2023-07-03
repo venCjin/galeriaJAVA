@@ -23,4 +23,6 @@ public interface DAO {
     @Nullable FotoTileData getFotoData(int idZdjecia);
     boolean addFotoRating(int idZdjecia, @Nullable User user, int rating);
     int addAlbum(String albumName, @Nonnull User user);
+    List<GalleryTileData> getUserAlbums(@Nonnull User user) throws Exception;
+    int addFoto(int idAlbum, String description, @Nonnull User user) throws Exception;
 }
