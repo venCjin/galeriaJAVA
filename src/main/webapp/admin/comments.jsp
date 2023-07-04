@@ -2,20 +2,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../components/page_head.jsp">
-  <jsp:param name="title" value="JAVA - admin - albumy"/>
+  <jsp:param name="title" value="JAVA - admin - komentarze"/>
 </jsp:include>
 
 <nav class="subNav">
+
+  <a id="Z" class="button" href="/admin-foto">
+    <i class="fa fa-file-image-o"></i>	Zdjęcia
+  </a>
+
+  <a id='K' class='button green' href="/admin-comments">
+    <i class='fa fa-comments-o'></i>	Komentarze
+  </a>
 
   <c:if test = "${user.isAdmin()}">
     <a id='A' class='button' href="/admin-users">
       <i class='fa fa-folder'></i>	Użytkownicy
     </a>
   </c:if>
-
-  <a id='K' class='button green' href="/admin-comments">
-    <i class='fa fa-comments-o'></i>	Komentarze
-  </a>
 
   <a class='powrot button' href='/'>
     <i class='fa fa-arrow-circle-left fa-lg' aria-hidden='true'></i>

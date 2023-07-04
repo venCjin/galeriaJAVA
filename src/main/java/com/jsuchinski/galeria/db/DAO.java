@@ -25,4 +25,7 @@ public interface DAO {
     int addAlbum(String albumName, @Nonnull User user);
     List<GalleryTileData> getUserAlbums(@Nonnull User user) throws Exception;
     int addFoto(int idAlbum, String description, @Nonnull User user) throws Exception;
+    List<FotoTileData> adminGetFotosWithParam(@Nonnull String zType);
+    boolean acceptFoto(int idFoto) throws Exception;
+    boolean deleteFoto(int idFoto) throws Exception;
 }

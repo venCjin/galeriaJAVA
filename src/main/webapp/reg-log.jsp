@@ -11,11 +11,11 @@
   <jsp:param name="navID" value="reg-log"/>
 </jsp:include>
 
-<% String log_err = request.getParameter("log_err");
-  if(log_err!=null) {%>
+
+<c:if test="${param.log_err != null}">
     <p class="error" style="width: 100%; text-align:center;"><i style="color: #EB3232;" class="fa fa-exclamation-circle" aria-hidden="true"></i> Aby dodawać albumy i zdjęcia muszisz być zalogowany</p>
     <br/>
-<%} %>
+</c:if>
 
 <section>
 

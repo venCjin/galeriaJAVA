@@ -22,4 +22,9 @@ public class FileUtils {
             return false;
         }
     }
+
+    public boolean deleteFoto(String path) {
+        File foto = new File(path);
+        return foto.delete();
+    }
 }

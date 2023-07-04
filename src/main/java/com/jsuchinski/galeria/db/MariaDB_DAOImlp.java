@@ -319,8 +319,7 @@ public class MariaDB_DAOImlp implements DAO {
 
     @Override
     public int addFoto(int idAlbum, String description, @Nonnull User user) throws Exception {
-        // TODO: Domyślnie zaakceptowane zdjęcie, zmienć gdy admin panel do akceptacji
-        boolean defaultAccepted = true;
+        boolean defaultAccepted = false;
         String insertSql = "INSERT INTO zadjecia (tytul, data, id_uzytkownika, id_albumu, zaakceptowane) VALUES(?, CURRENT_DATE, ?, ?, ?)";
         try (PreparedStatement pstmt = con.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, description);
@@ -342,6 +341,61 @@ public class MariaDB_DAOImlp implements DAO {
         } catch (SQLException e) {
             throw new Exception("Dodanie zdjęcia zakończone niepowodzeniem.");
         }
+    }
+
+    @Override
+    public List<FotoTileData> adminGetFotosWithParam(@Nonnull String param) {
+        List<FotoTileData> fotos = new ArrayList<>();
+        String selectSql = "SELECT id, id_albumu, tytul, data FROM zadjecia "+param+" ORDER BY id";
+        try (PreparedStatement pstmt = con.prepareStatement(selectSql)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    //Date d = rs.getDate("data");
+                    fotos.add(
+                        new FotoTileData(
+                            rs.getInt("id_albumu"),
+                            rs.getInt("id"),
+                            rs.getString("tytul"),
+                            null,
+                            rs.getString("data")
+                        )
+                    );
+                }
+            }
+        } catch (SQLException ignored) {
+        }
+
+        return fotos;
+    }
+
+    @Override
+    public boolean acceptFoto(int idFoto) throws Exception {
+        boolean updated = false;
+        String sql = "UPDATE zadjecia SET zaakceptowane=1 WHERE id=?";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, idFoto);
+
+            updated = pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new Exception("Zaakceptowanie zdjęcia nie powiodła się. Spróbuj ponownie.<br>Opis błędu: " + e.getMessage(), e);
+        }
+        return updated;
+    }
+
+    @Override
+    public boolean deleteFoto(int idFoto) throws Exception {
+        boolean deleted = false;
+        String sql = "DELETE FROM zadjecia WHERE id=?";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, idFoto);
+
+            deleted = pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new Exception("Usunięcie zdjęcia nie powiodło się. Spróbuj ponownie.<br>Opis błędu: " + e.getMessage(), e);
+        }
+        return deleted;
     }
 
     //    public static void main(String[] args) {

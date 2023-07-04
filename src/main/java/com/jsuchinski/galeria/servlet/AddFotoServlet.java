@@ -88,7 +88,8 @@ public class AddFotoServlet extends HttpServlet {
             request.setAttribute("id_foto", idZdjecia);
         }
 
-        //request.getRequestDispatcher("/dodaj-foto.jsp").forward(request, response);
-        doGet(request,response);
+//        doGet(request,response);
+        response.sendRedirect("/dodaj-foto?success=Zdj%C4%99cie zosta%C5%82o dodane%21&id_albumu="+idAlbumu+"&id_foto="+idZdjecia);
+
     }
 }

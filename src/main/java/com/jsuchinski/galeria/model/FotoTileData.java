@@ -14,6 +14,11 @@ public class FotoTileData {
         this.author = author;
         this.date = date;
     }
+    public FotoTileData(int idAlbum, int idPhoto, String description) {
+        this.idAlbum = idAlbum;
+        this.idPhoto = idPhoto;
+        this.description = description;
+    }
     public int getIdAlbum() {
         return idAlbum;
     }
